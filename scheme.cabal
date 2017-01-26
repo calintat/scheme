@@ -1,5 +1,5 @@
 name:                scheme
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Minimal interpreter for Scheme
 homepage:            https://github.com/calintat/Scheme
 license:             BSD3
@@ -15,7 +15,9 @@ executable scheme
                        mtl,
                        haskeline,
                        array,
-                       parsec
+                       parsec,
+                       include-file,
+                       bytestring
   hs-source-dirs:      src
   default-language:    Haskell2010
 

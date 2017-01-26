@@ -1,7 +1,12 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Main where
 
 import Control.Applicative ((<$>))
+import Control.Exception
 import Control.Monad.Except
+import Data.ByteString.Char8 (unpack)
+import Development.IncludeFile
 import System.Console.Haskeline
 import System.Environment
 import System.IO
@@ -15,6 +20,8 @@ import Repl.Parser
 
 import Utils.IO
 import Utils.Storage
+
+$(includeFileInSource "lib/stdlib.scm" "stdlib")
 
 main :: IO ()
 main = do
@@ -38,7 +45,15 @@ runIOThrows = (extractValue <$>) . runExceptT . trapError
 
 -- loads the standard library
 loadStdLib :: SchemeEnv -> IOThrowsError String
-loadStdLib = flip loadFile "lib/stdlib.scm"
+loadStdLib env = const "stdlib loaded" <$> readStdLib env
+
+-- reads the standard library from the source
+readStdLib :: SchemeEnv -> IOThrowsError [SchemeVal]
+readStdLib env = liftIO (evaluate $ unpack stdlib) >>= readAndEval env
+
+-- reads and evaluates expressions from a string
+readAndEval :: SchemeEnv -> String -> IOThrowsError [SchemeVal]
+readAndEval env str = liftThrows (readExprList str) >>= mapM (eval env)
 
 -- loads a program from a file and returns the result
 loadFile :: SchemeEnv -> String -> IOThrowsError String
