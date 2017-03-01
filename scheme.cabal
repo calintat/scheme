@@ -1,5 +1,5 @@
 name:                scheme
-version:             0.1.0.1
+version:             0.1.0.2
 synopsis:            Minimal interpreter for Scheme
 homepage:            https://github.com/calintat/Scheme
 license:             BSD3

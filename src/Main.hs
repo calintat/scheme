@@ -65,7 +65,9 @@ replBody env = do
   input <- getInputLine "scheme>>> "
   case input of
     Nothing -> return ()
-    Just expr -> unless (expr == ":quit") $ evalPrint env expr >> replBody env
+    Just "" -> replBody env
+    Just ":quit" -> return ()
+    Just expr -> evalPrint env expr >> replBody env
 
 -- evaluates a string and prints the result
 evalPrint :: SchemeEnv -> String -> InputT IO ()
