@@ -1,5 +1,5 @@
 name:                scheme
-version:             0.1.0.2
+version:             0.1.0.3
 synopsis:            Minimal interpreter for Scheme
 homepage:            https://github.com/calintat/Scheme
 license:             BSD3
@@ -23,4 +23,4 @@ executable scheme
 
 source-repository head
   type:     git
-  location: https://github.com/calintat/Scheme
+  location: https://github.com/calintat/scheme

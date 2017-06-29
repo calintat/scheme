@@ -23,7 +23,7 @@ import Utils.Storage
 
 $(includeFileInSource "lib/stdlib.scm" "stdlib")
 
-version = "Scheme interpreter, version 0.1.0.2"
+version = "Scheme interpreter, version 0.1.0.3"
 
 help = "To report an issue, go to https://github.com/calintat/scheme"
 
