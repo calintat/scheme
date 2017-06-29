@@ -12,68 +12,43 @@ import Repl.Parser
 import Utils.Storage
 
 eval :: SchemeEnv -> SchemeVal -> IOThrowsError SchemeVal
-
 eval env (Atom name) = getVar env name
-
 eval env val@(Boolean _) = return val
-
 eval env val@(Char _) = return val
-
-eval env val@(String _)  = return val
-
+eval env val@(String _) = return val
 eval env val@(Integer _) = return val
-
 eval env val@(Rational _) = return val
-
 eval env val@(Real _) = return val
-
 eval env val@(Complex _) = return val
-
 eval env val@(Vector _) = return val
-
 eval env val@(Bytevector _) = return val
-
 eval env (List [Atom "quote", val]) = return val
-
 eval env (List [Atom "unquote", val]) = eval env val
-
 eval env (List [Atom "quasiquote", val]) = return val
-
 eval env (List [Atom "if", cond, conseq]) = eval env (List [Atom "if", cond, conseq, Unspecified])
-
 eval env (List [Atom "if", cond, conseq, alt]) = do
   result <- eval env cond
   eval env $ if evalAsBool result then conseq else alt
-
 eval env (List [Atom "set!", Atom var, form]) =
     eval env form >>= setVar env var
-
 eval env (List [Atom "define", Atom var, form]) =
     eval env form >>= defineVar env var
-
 eval env (List (Atom "define" : List (Atom var : params) : body)) =
     makeNormalFunc env params body >>= defineVar env var
-
 eval env (List (Atom "define" : ImproperList (Atom var : params) varargs : body)) =
     makeVarargs varargs env params body >>= defineVar env var
-
 eval env (List (Atom "lambda" : List params : body)) =
     makeNormalFunc env params body
-
 eval env (List (Atom "lambda" : ImproperList params varargs : body)) =
     makeVarargs varargs env params body
-
 eval env (List (Atom "lambda" : varargs@(Atom _) : body)) =
     makeVarargs varargs env [] body
-
 eval env (List [Atom "load", String filename]) =
     load filename >>= fmap last . mapM (eval env)
-
 eval env (List (function : args)) = do
     func <- eval env function
     argVals <- mapM (eval env) args
     apply func argVals
-
 eval env badForm = throwError $ Default $ show badForm
 
 makeFunc varargs env params body = return $ Func (map showVal params) varargs body env

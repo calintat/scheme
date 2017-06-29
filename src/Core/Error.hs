@@ -6,15 +6,10 @@ import Text.Printf (printf)
 -- ERROR DATA TYPE -------------------------------------------------------------
 
 data SchemeErr = Default String
-
                | Parsing String
-
                | UnboundFun String
-
                | UnboundVar String
-
                | WrongNumArgs Int String
-
                | TypeMismatch String String
 
 -- ERROR UTILS -----------------------------------------------------------------
@@ -36,17 +31,11 @@ trapError action = catchError action $ return . show
 instance Show SchemeErr where show = showErr
 
 showErr :: SchemeErr -> String
-
 showErr (Default message) = showDefault message
-
 showErr (Parsing message) = showParsing message
-
 showErr (UnboundFun name) = showUnboundFun name
-
 showErr (UnboundVar name) = showUnboundVar name
-
 showErr (WrongNumArgs expected found) = showWrongNumArgs expected found
-
 showErr (TypeMismatch expected found) = showTypeMismatch expected found
 
 -- returns a default error message

@@ -14,39 +14,22 @@ parseExpr :: Parser SchemeVal
 parseExpr = tryAll parsers
 
 parsers = [parseAtom,
-
            parseAtomEnclosed,
-
            parseBoolean,
-
            parseChar,
-
            parseHexChar,
-
            parseSpecialChar,
-
            parseString,
-
            parseComplex,
-
            parseReal,
-
            parseRational,
-
            parseInteger,
-
            parseList,
-
            parseImproperList,
-
            parseVector,
-
            parseBytevector,
-
            parseQuote,
-
            parseUnquote,
-
            parseQuasiquote]
 
 -- PARSERS ---------------------------------------------------------------------
@@ -197,19 +180,13 @@ specialChars = [("alarm", '\a'), ("backspace", '\b'), ("delete", '\DEL'),
 int = read <$> many1 digit
 
 hex = fmap fromHex $ string "#x" >> many1 hexDigit
-
 dec = fmap fromDec $ string "#d" >> many1 decDigit
-
 oct = fmap fromOct $ string "#o" >> many1 octDigit
-
 bin = fmap fromBin $ string "#b" >> many1 binDigit
 
 fromHex = fst . head . readHex
-
 fromDec = read
-
 fromOct = fst . head . readOct
-
 fromBin = foldl1 (\ a b -> 2 * a + b) . map digitToInt
 
 decDigit = digit
