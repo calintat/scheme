@@ -23,10 +23,18 @@ import Utils.Storage
 
 $(includeFileInSource "lib/stdlib.scm" "stdlib")
 
+version = "Scheme interpreter, version 0.1.0.2"
+
+help = "To report an issue, go to https://github.com/calintat/scheme"
+
 main :: IO ()
 main = do
   args <- getArgs
-  if null args then runRepl else runFile args
+  case args of
+      [] -> runRepl
+      ["--version"] -> putStrLn version
+      ["--help"] -> putStrLn help
+      _ -> runFile args
 
 -- runs the read-eval-print loop
 runRepl :: IO ()
